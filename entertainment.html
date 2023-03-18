@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>News from Times of India</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="app-css.css" type="text/css">
+    <style>
+      /* CSS styles for article elements */
+      .article {
+        margin-bottom: 20px;
+      }
+      .article h2 {
+        font-size: 24px;
+        margin-bottom: 5px;
+      }
+      .article p {
+        margin-bottom: 10px;
+      }
+      .article a {
+        display: block;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="top-panel">The Times of ASME</div>
+    <hr>
+    <div id="nav-panel">
+      <a class="type" href="top-stories.html">Top Stories</a><a class="type" href="sports.html">Sports</a><a class="type" href="science.html">Science</a>
+      <a class="type" href="environment.html">Environment</a><a class="type" href="technology.html">Technology</a><a class="type" href="entertainment.html" style="background-color: #696969 !important; color:#fff !important">Entertainment</a>
+    </div>
+    <hr>
+   <div id ='top'><div id="news-container"></div></div>
+
+    <script>
+      fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ftimesofindia.indiatimes.com%2Frssfeeds%2F1081479906.cms')
+        .then(response => response.json())
+        .then(data => {
+          const newsContainer = document.getElementById('news-container');
+          const articles = data.items;
+
+          articles.forEach(article => {
+            const title = article.title;
+            const description = article.description;
+            const link = article.link;
+            const image = article.enclosure.link;
+
+            const articleDiv = document.createElement('div');
+            articleDiv.classList.add('article');
+
+            const titleElement = document.createElement('h2');
+            titleElement.textContent = title;
+
+             descriptionElement = document.createElement('p');
+           // descriptionElement.textContent = description;
+
+            const linkElement = document.createElement('a');
+            linkElement.href = link;
+            linkElement.textContent = '...Read more';
+            
+            const imageElement = document.createElement('img');
+            imageElement.src = image;
+
+
+            articleDiv.appendChild(titleElement);
+            articleDiv.appendChild(descriptionElement);
+            descriptionElement.appendChild(linkElement); //append link to description
+            articleDiv.appendChild(imageElement);
+
+            newsContainer.appendChild(articleDiv);
+          });
+        })
+        .catch(error => console.log(error));
+    </script>
+  </body>
+</html>
